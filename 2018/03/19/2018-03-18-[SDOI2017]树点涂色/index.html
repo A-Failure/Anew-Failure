@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="题目题目描述Bob有一棵n个点的有根树，其中1号点是根节点。Bob在每个点上涂了颜色，并且每个点上的颜色不同。 定义一条路径的权值是：这条路径上的点（包括起点和终点）共有多少种不同的颜色。 Bob可能会进行这几种操作： 1 x 把点x到根节点的路径上所有的点染上一种没有用过的新颜色。 2 x y 求x到y的路径的权值。 3 x 在以x为根的子树中选择一个点，使得这个点到根节点的路径权值最大，求最大">
+<meta name="keywords" content="树链剖分,Link Cut Tree,差分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[SDOI2017]树点涂色">
+<meta property="og:url" content="http://yoursite.com/2018/03/19/2018-03-18-[SDOI2017]树点涂色/index.html">
+<meta property="og:site_name" content="Dispwnl">
+<meta property="og:description" content="题目题目描述Bob有一棵n个点的有根树，其中1号点是根节点。Bob在每个点上涂了颜色，并且每个点上的颜色不同。 定义一条路径的权值是：这条路径上的点（包括起点和终点）共有多少种不同的颜色。 Bob可能会进行这几种操作： 1 x 把点x到根节点的路径上所有的点染上一种没有用过的新颜色。 2 x y 求x到y的路径的权值。 3 x 在以x为根的子树中选择一个点，使得这个点到根节点的路径权值最大，求最大">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/img/study/lct-shudianranse1.png">
+<meta property="og:updated_time" content="2018-10-09T12:26:35.565Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[SDOI2017]树点涂色">
+<meta name="twitter:description" content="题目题目描述Bob有一棵n个点的有根树，其中1号点是根节点。Bob在每个点上涂了颜色，并且每个点上的颜色不同。 定义一条路径的权值是：这条路径上的点（包括起点和终点）共有多少种不同的颜色。 Bob可能会进行这几种操作： 1 x 把点x到根节点的路径上所有的点染上一种没有用过的新颜色。 2 x y 求x到y的路径的权值。 3 x 在以x为根的子树中选择一个点，使得这个点到根节点的路径权值最大，求最大">
+<meta name="twitter:image" content="http://yoursite.com/img/study/lct-shudianranse1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/19/2018-03-18-[SDOI2017]树点涂色/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>[SDOI2017]树点涂色 | Dispwnl</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Dispwnl</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">A Failure</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-users"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-友链">
+    <a href="/links/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />友链</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/19/2018-03-18-[SDOI2017]树点涂色/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dispwnl">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qwq.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dispwnl">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">[SDOI2017]树点涂色
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-03-19 00:00:00" itemprop="dateCreated datePublished" datetime="2018-03-19T00:00:00+08:00">2018-03-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-09 20:26:35" itemprop="dateModified" datetime="2018-10-09T20:26:35+08:00">2018-10-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a><a href="https://www.luogu.org/problemnew/show/P3703" target="_blank" rel="noopener">题目</a></h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>Bob有一棵n个点的有根树，其中1号点是根节点。Bob在每个点上涂了颜色，并且每个点上的颜色不同。</p>
+<p>定义一条路径的权值是：这条路径上的点（包括起点和终点）共有多少种不同的颜色。</p>
+<p>Bob可能会进行这几种操作：</p>
+<p>1 x 把点x到根节点的路径上所有的点染上一种没有用过的新颜色。</p>
+<p>2 x y 求x到y的路径的权值。</p>
+<p>3 x 在以x为根的子树中选择一个点，使得这个点到根节点的路径权值最大，求最大权值。</p>
+<p>Bob一共会进行m次操作</p>
+<h3 id="输入输出格式"><a href="#输入输出格式" class="headerlink" title="输入输出格式"></a>输入输出格式</h3><h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>第一行两个数n,m。</p>
+<p>接下来n-1行，每行两个数a,b，表示a与b之间有一条边。</p>
+<p>接下来m行，表示操作，格式见题目描述</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>每当出现2,3操作，输出一行。</p>
+<p>如果是2操作，输出一个数表示路径的权值</p>
+<p>如果是3操作，输出一个数表示权值的最大值</p>
+<h3 id="输入输出样例"><a href="#输入输出样例" class="headerlink" title="输入输出样例"></a>输入输出样例</h3><h4 id="输入样例-1："><a href="#输入样例-1：" class="headerlink" title="输入样例#1："></a>输入样例#1：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">5 6</span><br><span class="line">1 2</span><br><span class="line">2 3</span><br><span class="line">3 4</span><br><span class="line">3 5</span><br><span class="line">2 4 5</span><br><span class="line">3 3</span><br><span class="line">1 4</span><br><span class="line">2 4 5</span><br><span class="line">1 5</span><br><span class="line">2 4 5</span><br></pre></td></tr></table></figure>
+<h4 id="输出样例-1："><a href="#输出样例-1：" class="headerlink" title="输出样例#1："></a>输出样例#1：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">3</span><br><span class="line">4</span><br><span class="line">2</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>共10个测试点</p>
+<p>测试点1，$1\leq n,m\leq 1000$</p>
+<p>测试点2、3，没有2操作</p>
+<p>测试点4、5，没有3操作</p>
+<p>测试点6，树的生成方式是，$对于i(2\leq i\leq n)$，在1到$i−1$中随机选一个点作为$i$的父节点。</p>
+<p>测试点7，$1\leq n,m\leq 50000$</p>
+<p>测试点8，$1\leq n\leq 50000$</p>
+<p>测试点9,10，无特殊限制</p>
+<p>对所有数据，$1\leq n\leq 10^5,1\leq m\leq 10^5$</p>
+<p>时间限制：1s</p>
+<p>空间限制：128MB</p>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><p>恶心题<del>为什么SD光出这种题</del>。。。</p>
+<p>总的来说就是$LCT$+树链剖分+树上差分</p>
+<p>先不管操作1</p>
+<p>对于操作2，考虑树上差分，设$s[i]$为$i$点到根的权值和，则答案就是$s[x]+s[y]-s[lca(x,y)]*2+1$（多减了1个$lca$所以+1）</p>
+<p>那么每个点的初始值就是ta的深度（因为开始每个点颜色都不一样）</p>
+<p>发现上面的关系可以用树链剖分来解决</p>
+<p>求出$lca$后单点查询$x,y,lca$的权值就可以解决操作2</p>
+<p>操作3求子树最大值也是树链剖分的基本操作</p>
+<p>主要问题是操作1</p>
+<p>操作1就很妙了，利用了一个性质：（以下注意链和边的区分）</p>
+<p><strong>$LCT$中实链数量（即$splay$的数量）=虚边数量+1</strong></p>
+<p>我们把同一颜色的点放在1个$splay$里</p>
+<p>由操作可得，$LCT$中点$i$到根节点有多少实链$s[i]$就是多少</p>
+<p>所以$access$将几个$splay$连成1个$splay$，正好对应着用同一种颜色覆盖路径</p>
+<p>然后$access$的时候如果一条边由虚变实（即虚边减少），这条边连的深度较大的点的子树每个点的$s-1$</p>
+<p>如果一条边由实变虚（即虚边增加），这条边连的深度较大的点的子树每个点的$s+1$</p>
+<p>如图：</p>
+<p><img src="/img/study/lct-shudianranse1.png" alt=""></p>
+<p>设6号点为根，图中红色虚边要变成实边，深度较大的节点是5（4号红边怎么变跟ta没关系）</p>
+<p>5点的相连的<strong>实链</strong>合并了，但到根节点的实链总数没变，所以对应的s不变</p>
+<p>1、2、3点到根的实链合并了，到根节点的实链总数-1，所以对应的$s-1$</p>
+<p>实变虚同理<del>自己yy即可</del></p>
+<p>所以$access$时要加上树链剖分的区间修改操作</p>
+<p>还有$LCT$中要保存当前节点在树中最左儿子的编号用以修改区间（即代码中$LCT$的$w_i$）</p>
+<p>于是这道<del>毒瘤+码农</del>题就解决了</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br></pre></td><td class="code"><pre><span class="line"># include&lt;iostream&gt;</span><br><span class="line"># include&lt;cstring&gt;</span><br><span class="line"># include&lt;cstdio&gt;</span><br><span class="line"># include&lt;cstdlib&gt;</span><br><span class="line"># define mid (l+r&gt;&gt;1)</span><br><span class="line"># define tl (k&lt;&lt;1)</span><br><span class="line"># define tr (k&lt;&lt;1|1)</span><br><span class="line">using namespace std;</span><br><span class="line">const int MAX=1e5+1;</span><br><span class="line">struct p&#123;</span><br><span class="line">    int x,y;</span><br><span class="line">&#125;c[MAX&lt;&lt;1];</span><br><span class="line">int n,m,num,cnt,tot,rt;</span><br><span class="line">int h[MAX],ID[MAX],top[MAX],d[MAX],fa[MAX],son[MAX],siz[MAX];</span><br><span class="line">struct Segment_Tree&#123;</span><br><span class="line">    struct q&#123;</span><br><span class="line">        int x,lazy;</span><br><span class="line">    &#125;s[MAX&lt;&lt;2];</span><br><span class="line">    void pus(int k)</span><br><span class="line">    &#123;</span><br><span class="line">        s[k].x=max(s[tl].x,s[tr].x);</span><br><span class="line">    &#125;</span><br><span class="line">    void down(int k)</span><br><span class="line">    &#123;</span><br><span class="line">        int f=s[k].lazy;</span><br><span class="line">        s[k].lazy=0;</span><br><span class="line">        if(!f) return;</span><br><span class="line">        s[tl].lazy+=f,s[tr].lazy+=f;</span><br><span class="line">        s[tl].x+=f,s[tr].x+=f;</span><br><span class="line">    &#125;</span><br><span class="line">    void change(int l,int r,int k,int L,int R,int dis)</span><br><span class="line">    &#123;</span><br><span class="line">        if(l==L&amp;&amp;r==R)</span><br><span class="line">        &#123;</span><br><span class="line">            s[k].x+=dis,s[k].lazy+=dis;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        down(k);</span><br><span class="line">        if(R&lt;=mid) change(l,mid,tl,L,R,dis);</span><br><span class="line">        else if(L&gt;mid) change(mid+1,r,tr,L,R,dis);</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            change(l,mid,tl,L,mid,dis);</span><br><span class="line">            change(mid+1,r,tr,mid+1,R,dis);</span><br><span class="line">        &#125;</span><br><span class="line">        pus(k);</span><br><span class="line">    &#125;</span><br><span class="line">    void change1(int l,int r,int k,int x,int dis)</span><br><span class="line">    &#123;</span><br><span class="line">        if(l==r)</span><br><span class="line">        &#123;</span><br><span class="line">            s[k].x+=dis;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        down(k);</span><br><span class="line">        if(x&lt;=mid) change1(l,mid,tl,x,dis);</span><br><span class="line">        else change1(mid+1,r,tr,x,dis);</span><br><span class="line">        pus(k);</span><br><span class="line">    &#125;</span><br><span class="line">    int ask(int l,int r,int k,int L,int R)</span><br><span class="line">    &#123;</span><br><span class="line">        if(l==L&amp;&amp;r==R)</span><br><span class="line">        return s[k].x;</span><br><span class="line">        down(k);</span><br><span class="line">        if(R&lt;=mid) return ask(l,mid,tl,L,R);</span><br><span class="line">        else if(L&gt;mid) return ask(mid+1,r,tr,L,R);</span><br><span class="line">        else return max(ask(l,mid,tl,L,mid),ask(mid+1,r,tr,mid+1,R));</span><br><span class="line">    &#125;</span><br><span class="line">    int ask1(int l,int r,int k,int x)</span><br><span class="line">    &#123;</span><br><span class="line">        if(l==r) return s[k].x;</span><br><span class="line">        down(k);</span><br><span class="line">        if(x&lt;=mid) return ask1(l,mid,tl,x);</span><br><span class="line">        else return ask1(mid+1,r,tr,x);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;Tree1;</span><br><span class="line">struct Link_Cut_Tree&#123;</span><br><span class="line">    int fa[MAX],w[MAX];</span><br><span class="line">    int son[MAX][2];</span><br><span class="line">    bool fl[MAX];</span><br><span class="line">    bool is_root(int x)</span><br><span class="line">    &#123;</span><br><span class="line">        return son[fa[x]][1]!=x&amp;&amp;son[fa[x]][0]!=x;</span><br><span class="line">    &#125;</span><br><span class="line">    bool id(int x)</span><br><span class="line">    &#123;</span><br><span class="line">        return son[fa[x]][0]==x?0:1;</span><br><span class="line">    &#125;</span><br><span class="line">    void pus(int x)</span><br><span class="line">    &#123;</span><br><span class="line">        if(son[x][0]) w[x]=w[son[x][0]]; </span><br><span class="line">        else w[x]=x;</span><br><span class="line">    &#125;</span><br><span class="line">    void down(int x)</span><br><span class="line">    &#123;</span><br><span class="line">        if(x&amp;&amp;fl[x])</span><br><span class="line">        &#123;</span><br><span class="line">            if(son[x][1]) fl[son[x][1]]^=1;</span><br><span class="line">            if(son[x][0]) fl[son[x][0]]^=1;</span><br><span class="line">            swap(son[x][1],son[x][0]);</span><br><span class="line">            fl[x]=0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    void rot(int x)</span><br><span class="line">    &#123;</span><br><span class="line">        int y=fa[x],z=fa[y],k=id(x);</span><br><span class="line">        if(!is_root(y)) son[z][id(y)]=x;</span><br><span class="line">        son[y][k]=son[x][k^1],fa[son[y][k]]=y;</span><br><span class="line">        son[x][k^1]=y,fa[y]=x;</span><br><span class="line">        fa[x]=z;</span><br><span class="line">        pus(y),pus(x);</span><br><span class="line">    &#125;</span><br><span class="line">    void PUS(int x)</span><br><span class="line">    &#123;</span><br><span class="line">        if(!is_root(x)) PUS(fa[x]);</span><br><span class="line">        down(x);</span><br><span class="line">    &#125;</span><br><span class="line">    void splay(int x)</span><br><span class="line">    &#123;</span><br><span class="line">        PUS(x);</span><br><span class="line">        for(int y;!is_root(x);rot(x))</span><br><span class="line">          if(!is_root(y=fa[x]))</span><br><span class="line">          rot(id(x)==id(y)?y:x);</span><br><span class="line">    &#125;</span><br><span class="line">    void access(int x)</span><br><span class="line">    &#123;</span><br><span class="line">        for(int y=0;x;y=x,x=fa[x])</span><br><span class="line">          &#123;</span><br><span class="line">          	splay(x);</span><br><span class="line">          	int hh=w[son[x][1]];</span><br><span class="line">          	if(son[x][1]) Tree1.change(1,n,1,ID[hh],ID[hh]+siz[hh]-1,1);</span><br><span class="line">          	hh=w[y];</span><br><span class="line">            if(y) Tree1.change(1,n,1,ID[hh],ID[hh]+siz[hh]-1,-1);</span><br><span class="line">            son[x][1]=y;</span><br><span class="line">            if(y) fa[y]=x;</span><br><span class="line">          &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;Tree2;</span><br><span class="line">void add(int x,int y)</span><br><span class="line">&#123;</span><br><span class="line">    c[++num]=(p)&#123;h[x],y&#125;;h[x]=num;</span><br><span class="line">    c[++num]=(p)&#123;h[y],x&#125;,h[y]=num;</span><br><span class="line">&#125;</span><br><span class="line">void dfs(int x,int f)</span><br><span class="line">&#123;</span><br><span class="line">    fa[x]=f,d[x]=d[f]+1,siz[x]=1;</span><br><span class="line">    for(int i=h[x];i;i=c[i].x)</span><br><span class="line">      &#123;</span><br><span class="line">      	int y=c[i].y;</span><br><span class="line">      	if(y==f) continue;</span><br><span class="line">      	dfs(y,x);</span><br><span class="line">      	siz[x]+=siz[y];</span><br><span class="line">        if(siz[y]&gt;siz[son[x]]) son[x]=y;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br><span class="line">void dfs1(int x,int tp)</span><br><span class="line">&#123;</span><br><span class="line">    top[x]=tp,ID[x]=++cnt;</span><br><span class="line">    if(son[x]) dfs1(son[x],tp);</span><br><span class="line">    else return;</span><br><span class="line">    for(int i=h[x];i;i=c[i].x)</span><br><span class="line">      &#123;</span><br><span class="line">      	int y=c[i].y;</span><br><span class="line">      	if(y==fa[x]||y==son[x]) continue;</span><br><span class="line">      	dfs1(y,y);</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br><span class="line">int LCA(int x,int y)</span><br><span class="line">&#123;</span><br><span class="line">    while(top[x]!=top[y])</span><br><span class="line">    &#123;</span><br><span class="line">        if(d[top[x]]&lt;d[top[y]]) swap(x,y);</span><br><span class="line">        x=fa[top[x]];</span><br><span class="line">    &#125;</span><br><span class="line">    if(d[x]&gt;d[y]) swap(x,y);</span><br><span class="line">    return x;</span><br><span class="line">&#125;</span><br><span class="line">int read()</span><br><span class="line">&#123;</span><br><span class="line">    int x=0,f=1;</span><br><span class="line">    char ch=getchar();</span><br><span class="line">    for(;!isdigit(ch);f=(ch==&apos;-&apos;)?-1:1,ch=getchar());</span><br><span class="line">    for(;isdigit(ch);x=x*10+ch-48,ch=getchar());</span><br><span class="line">    return x*f;</span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    n=read(),m=read();</span><br><span class="line">    for(int i=1;i&lt;n;i++)</span><br><span class="line">      &#123;</span><br><span class="line">      	int x=read(),y=read();</span><br><span class="line">      	add(x,y);</span><br><span class="line">      &#125;</span><br><span class="line">    dfs(1,0);</span><br><span class="line">    dfs1(1,1);</span><br><span class="line">    for(int i=1;i&lt;=n;i++)</span><br><span class="line">      &#123;</span><br><span class="line">      	Tree1.change1(1,n,1,ID[i],d[i]);</span><br><span class="line">      	Tree2.w[i]=i,Tree2.fa[i]=fa[i];</span><br><span class="line">      &#125;</span><br><span class="line">    for(int i=1;i&lt;=m;i++)</span><br><span class="line">      &#123;</span><br><span class="line">      	int op=read(),x,y;</span><br><span class="line">      	if(op==1)</span><br><span class="line">        Tree2.access(read());</span><br><span class="line">        else if(op==2)</span><br><span class="line">        &#123;</span><br><span class="line">            x=read(),y=read();</span><br><span class="line">            int lca=LCA(x,y);</span><br><span class="line">            int s1=Tree1.ask1(1,n,1,ID[x]),s2=Tree1.ask1(1,n,1,ID[y]),s3=Tree1.ask1(1,n,1,ID[lca]);</span><br><span class="line">            printf(&quot;%d\n&quot;,s1+s2-s3*2+1);</span><br><span class="line">        &#125;</span><br><span class="line">        else if(op==3)</span><br><span class="line">        &#123;</span><br><span class="line">            x=read();</span><br><span class="line">            printf(&quot;%d\n&quot;,Tree1.ask(1,n,1,ID[x],ID[x]+siz[x]-1));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/树链剖分/" rel="tag"># 树链剖分</a>
+          
+            <a href="/tags/Link-Cut-Tree/" rel="tag"># Link Cut Tree</a>
+          
+            <a href="/tags/差分/" rel="tag"># 差分</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/18/2018-03-18-[ZJOI2012]网络/" rel="next" title="[ZJOI2012]网络">
+                <i class="fa fa-chevron-left"></i> [ZJOI2012]网络
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/20/2018-03-20-斜率优化（纯口胡）/" rel="prev" title="斜率优化（纯口胡）">
+                斜率优化（纯口胡） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/qwq.jpg"
+                alt="Dispwnl" />
+            
+              <p class="site-author-name" itemprop="name">Dispwnl</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">99</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">48</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出格式"><span class="nav-number">1.2.</span> <span class="nav-text">输入输出格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式："><span class="nav-number">1.2.1.</span> <span class="nav-text">输入格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式："><span class="nav-number">1.2.2.</span> <span class="nav-text">输出格式：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出样例"><span class="nav-number">1.3.</span> <span class="nav-text">输入输出样例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例-1："><span class="nav-number">1.3.1.</span> <span class="nav-text">输入样例#1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例-1："><span class="nav-number">1.3.2.</span> <span class="nav-text">输出样例#1：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#说明"><span class="nav-number">1.4.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">1.5.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">1.6.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-Dispwnl"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dispwnl</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" rel="external nofollow" href="https://theme-next.org">NexT.Gemini</a> v6.4.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

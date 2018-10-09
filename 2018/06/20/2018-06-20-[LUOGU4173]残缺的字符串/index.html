@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="和xminh讨论这题我发现我似乎$FFT$的式子都没搞懂…？ 题目题目描述很久很久以前，在你刚刚学习字符串匹配的时候，有两个仅包含小写字母的字符串$A$和$B$，其中$A$串长度为$m$，$B$串长度为$n$。可当你现在再次碰到这两个串时，这两个串已经老化了，每个串都有不同程度的残缺。  你想对这两个串重新进行匹配，其中$A$为模板串，那么现在问题来了，请回答，对于$B$的每一个位置$i$，从这">
+<meta name="keywords" content="瞎搞,字符串,FFT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[LUOGU4173]残缺的字符串">
+<meta property="og:url" content="http://yoursite.com/2018/06/20/2018-06-20-[LUOGU4173]残缺的字符串/index.html">
+<meta property="og:site_name" content="Dispwnl">
+<meta property="og:description" content="和xminh讨论这题我发现我似乎$FFT$的式子都没搞懂…？ 题目题目描述很久很久以前，在你刚刚学习字符串匹配的时候，有两个仅包含小写字母的字符串$A$和$B$，其中$A$串长度为$m$，$B$串长度为$n$。可当你现在再次碰到这两个串时，这两个串已经老化了，每个串都有不同程度的残缺。  你想对这两个串重新进行匹配，其中$A$为模板串，那么现在问题来了，请回答，对于$B$的每一个位置$i$，从这">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/img/study/canque.png">
+<meta property="og:image" content="http://yoursite.com/img/study/canque2.png">
+<meta property="og:updated_time" content="2018-10-09T12:28:46.752Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[LUOGU4173]残缺的字符串">
+<meta name="twitter:description" content="和xminh讨论这题我发现我似乎$FFT$的式子都没搞懂…？ 题目题目描述很久很久以前，在你刚刚学习字符串匹配的时候，有两个仅包含小写字母的字符串$A$和$B$，其中$A$串长度为$m$，$B$串长度为$n$。可当你现在再次碰到这两个串时，这两个串已经老化了，每个串都有不同程度的残缺。  你想对这两个串重新进行匹配，其中$A$为模板串，那么现在问题来了，请回答，对于$B$的每一个位置$i$，从这">
+<meta name="twitter:image" content="http://yoursite.com/img/study/canque.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/20/2018-06-20-[LUOGU4173]残缺的字符串/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>[LUOGU4173]残缺的字符串 | Dispwnl</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Dispwnl</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">A Failure</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-users"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-友链">
+    <a href="/links/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />友链</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/20/2018-06-20-[LUOGU4173]残缺的字符串/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dispwnl">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qwq.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dispwnl">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">[LUOGU4173]残缺的字符串
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-06-20 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-20T00:00:00+08:00">2018-06-20</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-09 20:28:46" itemprop="dateModified" datetime="2018-10-09T20:28:46+08:00">2018-10-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>和xminh讨论这题我发现我似乎$FFT$的式子都没搞懂…？</p>
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a><a href="https://www.luogu.org/problemnew/show/P4173" target="_blank" rel="noopener">题目</a></h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>很久很久以前，在你刚刚学习字符串匹配的时候，有两个仅包含小写字母的字符串$A$和$B$，其中$A$串长度为$m$，$B$串长度为$n$。可当你现在再次碰到这两个串时，这两个串已经老化了，每个串都有不同程度的残缺。</p>
+</blockquote>
+<p>你想对这两个串重新进行匹配，其中$A$为模板串，那么现在问题来了，请回答，对于$B$的每一个位置$i$，从这个位置开始连续$m$个字符形成的子串是否可能与$A$串完全匹配?</p>
+<h3 id="输入输出格式"><a href="#输入输出格式" class="headerlink" title="输入输出格式"></a>输入输出格式</h3><h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>第一行包含两个正整数$m,n$，分别表示$A$串和$B$串的长度。</p>
+<p>第二行为一个长度为$m$的字符串$A$。</p>
+<p>第三行为一个长度为$n$的字符串$B$。</p>
+<p>两个串均仅由小写字母和’*’号组成，表示相应位置已经残缺。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>第一行包含一个整数$k$，表示$B$串中可以完全匹配$A$串的位置个数。</p>
+<p>若$k&gt;0$，则第二行输出$k$个正整数，从小到大依次输出每个可以匹配的开头位置（下标从$1$开始）。</p>
+<h3 id="输入输出样例"><a href="#输入输出样例" class="headerlink" title="输入输出样例"></a>输入输出样例</h3><h4 id="输入样例-1："><a href="#输入样例-1：" class="headerlink" title="输入样例#1："></a>输入样例#1：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">3 7</span><br><span class="line">a*b</span><br><span class="line">aebr*ob</span><br></pre></td></tr></table></figure>
+<h4 id="输出样例-1："><a href="#输出样例-1：" class="headerlink" title="输出样例#1："></a>输出样例#1：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2</span><br><span class="line">1 5</span><br></pre></td></tr></table></figure>
+<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>100% 的数据满足$1\leq m\leq n\leq 300000$。</p>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><p>这题暴力能得80…就是最暴力的那种<del>数据太水了吧</del></p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"># include&lt;iostream&gt;</span><br><span class="line"># include&lt;cstring&gt;</span><br><span class="line"># include&lt;cstdio&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">const int MAX=3e5+1;</span><br><span class="line">int m,n;</span><br><span class="line">int A[MAX];</span><br><span class="line">string a,b;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    cin&gt;&gt;m&gt;&gt;n&gt;&gt;a&gt;&gt;b;</span><br><span class="line">    int l1=a.length(),l2=b.length();</span><br><span class="line">    for(int i=0;i&lt;=l2-l1;++i)</span><br><span class="line">      &#123;</span><br><span class="line">      	bool fl=1;</span><br><span class="line">      	int j=i,l=0;</span><br><span class="line">      	while(l&lt;l1)</span><br><span class="line">      	if(a[l]==b[j]||a[l]==&apos;*&apos;||b[j]==&apos;*&apos;) ++j,++l;</span><br><span class="line">      	else</span><br><span class="line">      	&#123;</span><br><span class="line">      		fl=0;</span><br><span class="line">      		break;</span><br><span class="line">        &#125;</span><br><span class="line">        if(fl) A[++A[0]]=i+1;</span><br><span class="line">      &#125;</span><br><span class="line">    printf(&quot;%d\n&quot;,A[0]);</span><br><span class="line">    for(int i=1;i&lt;=A[0];++i)</span><br><span class="line">      printf(&quot;%d &quot;,A[i]);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除非你的暴力复杂度是$O(wys)$，不然肯定是卡不出AC的<del>没关系80分我已经满足了</del></p>
+<p>正解思路还是很妙的</p>
+<p>首先，我们发现这题难搞的原因是有’*’存在</p>
+<p>我们可以yy一下，假如能把两个字符串每个字符表示成数字，定两个字符串匹配相当于多项式相乘</p>
+<p>然后两个字符匹配的条件就是相乘等于一个特定的数</p>
+<p>因为’*’可以匹配任意字符，所以所有的字符与ta相乘值都相等</p>
+<p>可以想到：0乘以任何数都等于0</p>
+<p>所以我们可以把’*’定为0</p>
+<p>那么其他匹配成功结果应该等于什么呢？</p>
+<p>emmmm这个结果得存在一个性质，满足每个匹配成功结果累计（因为是数字所以就是相加）都满足这个性质，并且只要有一个不匹配都会破坏这个性质</p>
+<p>因为’*’都定为0了，所以可以把成功匹配的结果定为一个整数，不匹配为小数，整数加整数还是整数，整数加小数是小数</p>
+<p>好了，这样匹配的方式定了，那匹配的顺序呢？</p>
+<p>一次匹配是像这样（后面省略了）：<br><img src="/img/study/canque.png" alt=""></p>
+<p>图中两条线段是两个字符串</p>
+<p>假设匹配都还是从左向右一位一位匹配，发现是不行的，因为每一位匹配出来的指数不同，无法相加</p>
+<p>所以我们倒着匹配，把$A$倒过来：<br><img src="/img/study/canque2.png" alt=""></p>
+<p>这样匹配就行了，相乘的结果指数相同了</p>
+<p>所以$F(i)=\sum_{j=0}^{i}a(j)*b(i-j)$</p>
+<p>$FFT$的式子就出来啦（下标从0开始），$F(i)$表示$B$中以$i$为结尾的前$m$项匹配结果</p>
+<p>$A$中下标大于$m-1$的项都等于0，所以对结果无影响</p>
+<p>最后$F$的$m-1$~$n-1$项就是匹配的结果</p>
+<h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"># include&lt;iostream&gt;</span><br><span class="line"># include&lt;cstring&gt;</span><br><span class="line"># include&lt;cstdio&gt;</span><br><span class="line"># include&lt;cmath&gt;</span><br><span class="line"># include&lt;algorithm&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">const int MAX=2e6+1,MAXN=3e5+1;</span><br><span class="line">const double Pi=acos(-1.0);</span><br><span class="line">struct complex&#123;</span><br><span class="line">    double x,y;</span><br><span class="line">    complex(double X=0,double Y=0)&#123;x=X,y=Y;&#125;</span><br><span class="line">&#125;a[MAX],b[MAX];</span><br><span class="line">int n,m,l,lim=1;</span><br><span class="line">int r[MAX],ans[MAXN];</span><br><span class="line">string A,B;</span><br><span class="line">complex operator+ (complex x,complex y)</span><br><span class="line">&#123;</span><br><span class="line">    return complex(x.x+y.x,x.y+y.y);</span><br><span class="line">&#125;</span><br><span class="line">complex operator- (complex x,complex y)</span><br><span class="line">&#123;</span><br><span class="line">    return complex(x.x-y.x,x.y-y.y);</span><br><span class="line">&#125;</span><br><span class="line">complex operator* (complex x,complex y)</span><br><span class="line">&#123;</span><br><span class="line">    return complex(x.x*y.x-x.y*y.y,x.x*y.y+x.y*y.x);</span><br><span class="line">&#125;</span><br><span class="line">void fft(complex *A,int tt)</span><br><span class="line">&#123;</span><br><span class="line">    for(int i=0;i&lt;lim;++i)</span><br><span class="line">      if(i&lt;r[i]) swap(A[i],A[r[i]]);</span><br><span class="line">    for(int i=1;i&lt;lim;i&lt;&lt;=1)</span><br><span class="line">      &#123;</span><br><span class="line">      	complex w1(cos(Pi/i),tt*sin(Pi/i));</span><br><span class="line">      	for(int l=i&lt;&lt;1,j=0;j&lt;lim;j+=l)</span><br><span class="line">      	  &#123;</span><br><span class="line">      	  	complex w(1,0);</span><br><span class="line">      	  	for(int k=0;k&lt;i;++k,w=w*w1)</span><br><span class="line">      	  	  &#123;</span><br><span class="line">      	  	  	complex x=A[j+k],y=w*A[j+i+k];</span><br><span class="line">      	  	  	A[j+k]=x+y,A[j+i+k]=x-y;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    if(tt==-1)</span><br><span class="line">    for(int i=0;i&lt;lim;++i)</span><br><span class="line">      A[i].x/=(double)lim;</span><br><span class="line">&#125;</span><br><span class="line">string Read()</span><br><span class="line">&#123;</span><br><span class="line">    string a=&quot;&quot;;</span><br><span class="line">    char ch=getchar();</span><br><span class="line">    for(;(ch&lt;&apos;a&apos;||ch&gt;&apos;z&apos;)&amp;&amp;ch!=&apos;*&apos;;ch=getchar());</span><br><span class="line">    for(;(ch&gt;=&apos;a&apos;&amp;&amp;ch&lt;=&apos;z&apos;)||ch==&apos;*&apos;;a+=ch,ch=getchar());</span><br><span class="line">    return a;</span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    scanf(&quot;%d%d&quot;,&amp;m,&amp;n);</span><br><span class="line">    A=Read(),B=Read();</span><br><span class="line">    for(int i=0;i&lt;m;++i)</span><br><span class="line">      if(A[i]!=&apos;*&apos;) b[m-i-1].x=1.0/(double)(1e4+A[i]-&apos;a&apos;+1);</span><br><span class="line">    for(int i=0;i&lt;n;++i)</span><br><span class="line">      if(B[i]!=&apos;*&apos;) a[i].x=1e4+B[i]-&apos;a&apos;+1;</span><br><span class="line">    while(lim&lt;=n+m-2) lim&lt;&lt;=1,++l;</span><br><span class="line">    for(int i=0;i&lt;lim;++i)</span><br><span class="line">      r[i]=(r[i&gt;&gt;1]&gt;&gt;1)|((i&amp;1)&lt;&lt;(l-1));</span><br><span class="line">    fft(a,1),fft(b,1);</span><br><span class="line">    for(int i=0;i&lt;=lim;++i)</span><br><span class="line">      a[i]=a[i]*b[i];</span><br><span class="line">    fft(a,-1);</span><br><span class="line">    for(int i=m-1;i&lt;=n-1;++i)</span><br><span class="line">      &#123;</span><br><span class="line">      	int tt=a[i].x+0.5;</span><br><span class="line">      	if(abs(a[i].x-tt)&lt;=1e-6) ans[++ans[0]]=i-m+2;</span><br><span class="line">      &#125;</span><br><span class="line">    printf(&quot;%d\n&quot;,ans[0]);</span><br><span class="line">    for(int i=1;i&lt;=ans[0];++i)</span><br><span class="line">      printf(&quot;%d &quot;,ans[i]);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/瞎搞/" rel="tag"># 瞎搞</a>
+          
+            <a href="/tags/字符串/" rel="tag"># 字符串</a>
+          
+            <a href="/tags/FFT/" rel="tag"># FFT</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/19/2018-06-19-[AHOI2001]多项式乘法/" rel="next" title="[AHOI2001]多项式乘法">
+                <i class="fa fa-chevron-left"></i> [AHOI2001]多项式乘法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/27/2018-06-27-[SHOI2015]脑洞治疗仪/" rel="prev" title="[SHOI2015]脑洞治疗仪">
+                [SHOI2015]脑洞治疗仪 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/qwq.jpg"
+                alt="Dispwnl" />
+            
+              <p class="site-author-name" itemprop="name">Dispwnl</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">99</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">48</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出格式"><span class="nav-number">1.2.</span> <span class="nav-text">输入输出格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式："><span class="nav-number">1.2.1.</span> <span class="nav-text">输入格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式："><span class="nav-number">1.2.2.</span> <span class="nav-text">输出格式：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出样例"><span class="nav-number">1.3.</span> <span class="nav-text">输入输出样例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例-1："><span class="nav-number">1.3.1.</span> <span class="nav-text">输入样例#1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例-1："><span class="nav-number">1.3.2.</span> <span class="nav-text">输出样例#1：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#说明"><span class="nav-number">1.4.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">1.5.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">1.6.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-1"><span class="nav-number">1.7.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-Dispwnl"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dispwnl</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" rel="external nofollow" href="https://theme-next.org">NexT.Gemini</a> v6.4.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
