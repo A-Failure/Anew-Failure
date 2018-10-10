@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="题目题目大意给定一个带权无向图 对于每条边，求其他边不变时这条边能出现在这个图的每一个最小生成树上，这条边满足条件的最大权值是多少 Examplesinput123454 41 2 22 3 23 4 24 1 3 output12 2 2 1 input12344 31 2 22 3 23 4 2 output1-1 -1 -1 题解如图，绿边表示非树边，蓝边表示树边，很容易看出来一条非树边的答">
+<meta name="keywords" content="并查集,倍增">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[CF827D]Best Edge Weight">
+<meta property="og:url" content="http://yoursite.com/2018/09/29/2018-09-29-[CF827D]Best Edge Weight/index.html">
+<meta property="og:site_name" content="Dispwnl">
+<meta property="og:description" content="题目题目大意给定一个带权无向图 对于每条边，求其他边不变时这条边能出现在这个图的每一个最小生成树上，这条边满足条件的最大权值是多少 Examplesinput123454 41 2 22 3 23 4 24 1 3 output12 2 2 1 input12344 31 2 22 3 23 4 2 output1-1 -1 -1 题解如图，绿边表示非树边，蓝边表示树边，很容易看出来一条非树边的答">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/img/study/mst1.png">
+<meta property="og:image" content="http://yoursite.com/img/study/mst2.png">
+<meta property="og:updated_time" content="2018-10-09T12:31:00.065Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[CF827D]Best Edge Weight">
+<meta name="twitter:description" content="题目题目大意给定一个带权无向图 对于每条边，求其他边不变时这条边能出现在这个图的每一个最小生成树上，这条边满足条件的最大权值是多少 Examplesinput123454 41 2 22 3 23 4 24 1 3 output12 2 2 1 input12344 31 2 22 3 23 4 2 output1-1 -1 -1 题解如图，绿边表示非树边，蓝边表示树边，很容易看出来一条非树边的答">
+<meta name="twitter:image" content="http://yoursite.com/img/study/mst1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/29/2018-09-29-[CF827D]Best Edge Weight/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>[CF827D]Best Edge Weight | Dispwnl</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Dispwnl</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">A Failure</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-users"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-友链">
+    <a href="/links/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />友链</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/29/2018-09-29-[CF827D]Best Edge Weight/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dispwnl">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qwq.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dispwnl">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">[CF827D]Best Edge Weight
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-29 00:00:00" itemprop="dateCreated datePublished" datetime="2018-09-29T00:00:00+08:00">2018-09-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-09 20:31:00" itemprop="dateModified" datetime="2018-10-09T20:31:00+08:00">2018-10-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a><a href="http://codeforces.com/problemset/problem/827/D" target="_blank" rel="noopener">题目</a></h2><h3 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h3><p>给定一个带权无向图</p>
+<p>对于每条边，求其他边不变时这条边能出现在这个图的每一个最小生成树上，这条边满足条件的最大权值是多少</p>
+<h3 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h3><h4 id="input"><a href="#input" class="headerlink" title="input"></a>input</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">4 4</span><br><span class="line">1 2 2</span><br><span class="line">2 3 2</span><br><span class="line">3 4 2</span><br><span class="line">4 1 3</span><br></pre></td></tr></table></figure>
+<h4 id="output"><a href="#output" class="headerlink" title="output"></a>output</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2 2 2 1</span><br></pre></td></tr></table></figure>
+<h4 id="input-1"><a href="#input-1" class="headerlink" title="input"></a>input</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">4 3</span><br><span class="line">1 2 2</span><br><span class="line">2 3 2</span><br><span class="line">3 4 2</span><br></pre></td></tr></table></figure>
+<h4 id="output-1"><a href="#output-1" class="headerlink" title="output"></a>output</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1 -1 -1</span><br></pre></td></tr></table></figure>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><p><img src="/img/study/mst1.png" alt=""><br>如图，绿边表示非树边，蓝边表示树边，很容易看出来一条非树边的答案应该是ta两端之间树边的最大值-1，这样ta才能不被替换掉</p>
+<p>树边的答案需要非树边来更新</p>
+<p><img src="/img/study/mst2.png" alt=""><br>如图，红边表示要更新的树边，因为非树边一定不小于树边，树边答案应该为非树边权值-1，即保证最小生成树只能选ta这条边</p>
+<p>所以树边答案为两端包含ta的非树边的最小值-1</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"># include&lt;bits/stdc++.h&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">const int MAX=2e5+1;</span><br><span class="line">struct p&#123;</span><br><span class="line">    int x,y,dis,id;</span><br><span class="line">    bool operator&lt; (const p &amp;a)</span><br><span class="line">    const&#123;</span><br><span class="line">        return dis&lt;a.dis;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;c[MAX],cc[MAX&lt;&lt;1];</span><br><span class="line">int n,m,num;</span><br><span class="line">int d[MAX],h[MAX],fa[MAX],Ans[MAX],ID[MAX];</span><br><span class="line">int f[MAX][19],maxn[MAX][19];</span><br><span class="line">bool use[MAX];</span><br><span class="line">int read()</span><br><span class="line">&#123;</span><br><span class="line">    int x(0);</span><br><span class="line">    char ch=getchar();</span><br><span class="line">    for(;!isdigit(ch);ch=getchar());</span><br><span class="line">    for(;isdigit(ch);x=x*10+ch-48,ch=getchar());</span><br><span class="line">    return x;</span><br><span class="line">&#125;</span><br><span class="line">void dfs(int x,int fa=0)</span><br><span class="line">&#123;</span><br><span class="line">    d[x]=d[fa]+1,f[x][0]=fa;</span><br><span class="line">    for(int i=h[x];i;i=cc[i].x)</span><br><span class="line">      if(cc[i].y!=fa) maxn[cc[i].y][0]=cc[i].dis,ID[cc[i].y]=cc[i].id,dfs(cc[i].y,x); </span><br><span class="line">&#125;</span><br><span class="line">int LCA(int x,int y)</span><br><span class="line">&#123;</span><br><span class="line">    if(d[x]&gt;d[y]) swap(x,y);</span><br><span class="line">    int D=d[y]-d[x];</span><br><span class="line">    for(int i=0;(1&lt;&lt;i)&lt;=D;++i)</span><br><span class="line">      if((1&lt;&lt;i)&amp;D) y=f[y][i];</span><br><span class="line">    if(x==y) return x;</span><br><span class="line">    for(int i=18;i&gt;=0;--i)</span><br><span class="line">      if(f[y][i]!=f[x][i]) x=f[x][i],y=f[y][i];</span><br><span class="line">    return f[x][0];</span><br><span class="line">&#125;</span><br><span class="line">void add(int x,int y,int dis,int id)</span><br><span class="line">&#123;</span><br><span class="line">    cc[++num]=(p)&#123;h[x],y,dis,id&#125;,h[x]=num;</span><br><span class="line">    cc[++num]=(p)&#123;h[y],x,dis,id&#125;,h[y]=num;</span><br><span class="line">&#125;</span><br><span class="line">void init()</span><br><span class="line">&#123;</span><br><span class="line">    for(int i=1;i&lt;=18;++i)</span><br><span class="line">      for(int j=1;j&lt;=n;++j)</span><br><span class="line">        f[j][i]=f[f[j][i-1]][i-1],maxn[j][i]=max(maxn[j][i-1],maxn[f[j][i-1]][i-1]);</span><br><span class="line">&#125;</span><br><span class="line">int GET_DIS(int x,int y)</span><br><span class="line">&#123;</span><br><span class="line">    int ans=0;</span><br><span class="line">    for(int i=18;i&gt;=0;--i)</span><br><span class="line">      if(d[f[x][i]]&gt;=d[y]) ans=max(ans,maxn[x][i]),x=f[x][i];</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br><span class="line">int find(int x)</span><br><span class="line">&#123;</span><br><span class="line">    if(fa[x]!=x) fa[x]=find(fa[x]);</span><br><span class="line">    return fa[x];</span><br><span class="line">&#125;</span><br><span class="line">void change(int x,int y,int dis)</span><br><span class="line">&#123;</span><br><span class="line">    int qwq=find(x);</span><br><span class="line">    while(d[qwq]&gt;d[y]) </span><br><span class="line">    Ans[ID[qwq]]=min(Ans[ID[qwq]],dis),fa[qwq]=find(f[qwq][0]),qwq=fa[qwq];</span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    n=read(),m=read();</span><br><span class="line">    for(int i=1;i&lt;=n;++i)</span><br><span class="line">      fa[i]=i;</span><br><span class="line">    for(int i=1;i&lt;=m;++i)</span><br><span class="line">      c[i].x=read(),c[i].y=read(),c[i].dis=read(),c[i].id=i,Ans[i]=2e9;</span><br><span class="line">    sort(c+1,c+1+m);</span><br><span class="line">    for(int i=1,L=0;i&lt;=m;++i)</span><br><span class="line">      &#123;</span><br><span class="line">      	if(L==n-1) break;</span><br><span class="line">      	int r1=find(c[i].x),r2=find(c[i].y);</span><br><span class="line">      	if(r1==r2) continue;</span><br><span class="line">      	fa[r1]=r2,add(c[i].x,c[i].y,c[i].dis,c[i].id),use[i]=1;</span><br><span class="line">      &#125;</span><br><span class="line">    for(int i=1;i&lt;=n;++i)</span><br><span class="line">      fa[i]=i;</span><br><span class="line">    dfs(1),init();</span><br><span class="line">    for(int i=1,lca;i&lt;=m;++i)</span><br><span class="line">      if(!use[i])</span><br><span class="line">      lca=LCA(c[i].x,c[i].y),Ans[c[i].id]=max(GET_DIS(c[i].x,lca),GET_DIS(c[i].y,lca))-1,change(c[i].x,lca,c[i].dis-1),change(c[i].y,lca,c[i].dis-1);</span><br><span class="line">    for(int i=1;i&lt;=m;++i)</span><br><span class="line">      printf(&quot;%d &quot;,Ans[i]==2e9?-1:Ans[i]);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/并查集/" rel="tag"># 并查集</a>
+          
+            <a href="/tags/倍增/" rel="tag"># 倍增</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/27/2018-09-27-[CF1039C]Network Safety/" rel="next" title="[CF1039C]Network Safety">
+                <i class="fa fa-chevron-left"></i> [CF1039C]Network Safety
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/08/2018-10-08-[HDU5215]Cycle/" rel="prev" title="[HDU5215]Cycle">
+                [HDU5215]Cycle <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/qwq.jpg"
+                alt="Dispwnl" />
+            
+              <p class="site-author-name" itemprop="name">Dispwnl</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">99</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">48</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目大意"><span class="nav-number">1.1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Examples"><span class="nav-number">1.2.</span> <span class="nav-text">Examples</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#input"><span class="nav-number">1.2.1.</span> <span class="nav-text">input</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#output"><span class="nav-number">1.2.2.</span> <span class="nav-text">output</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#input-1"><span class="nav-number">1.2.3.</span> <span class="nav-text">input</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#output-1"><span class="nav-number">1.2.4.</span> <span class="nav-text">output</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">1.3.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">1.4.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-Dispwnl"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dispwnl</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" rel="external nofollow" href="https://theme-next.org">NexT.Gemini</a> v6.4.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

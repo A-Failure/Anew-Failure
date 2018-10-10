@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="题目（bzoj权限题）题目描述Ayu 在七年前曾经收到过一个天使玩偶，当时她把它当作时间囊埋在了地下。而七年后 的今天，Ayu 却忘了她把天使玩偶埋在了哪里，所以她决定仅凭一点模糊的记忆来寻找它。 我们把 Ayu 生活的小镇看作一个二维平面坐标系，而 Ayu 会不定时地记起可能在某个点 (xmy) 埋下了天使玩偶；或者 Ayu 会询问你，假如她在 (x,y) ，那么她离近的天使玩偶可能埋下的地方有">
+<meta name="keywords" content="CDQ分治">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Violet 3]天使玩偶">
+<meta property="og:url" content="http://yoursite.com/2018/04/17/2018-04-17-[Violet 3]天使玩偶/index.html">
+<meta property="og:site_name" content="Dispwnl">
+<meta property="og:description" content="题目（bzoj权限题）题目描述Ayu 在七年前曾经收到过一个天使玩偶，当时她把它当作时间囊埋在了地下。而七年后 的今天，Ayu 却忘了她把天使玩偶埋在了哪里，所以她决定仅凭一点模糊的记忆来寻找它。 我们把 Ayu 生活的小镇看作一个二维平面坐标系，而 Ayu 会不定时地记起可能在某个点 (xmy) 埋下了天使玩偶；或者 Ayu 会询问你，假如她在 (x,y) ，那么她离近的天使玩偶可能埋下的地方有">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/img/study/angel1.png">
+<meta property="og:image" content="http://yoursite.com/img/study/angel2.png">
+<meta property="og:image" content="http://yoursite.com/img/study/angel3.png">
+<meta property="og:updated_time" content="2018-10-09T12:28:01.040Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Violet 3]天使玩偶">
+<meta name="twitter:description" content="题目（bzoj权限题）题目描述Ayu 在七年前曾经收到过一个天使玩偶，当时她把它当作时间囊埋在了地下。而七年后 的今天，Ayu 却忘了她把天使玩偶埋在了哪里，所以她决定仅凭一点模糊的记忆来寻找它。 我们把 Ayu 生活的小镇看作一个二维平面坐标系，而 Ayu 会不定时地记起可能在某个点 (xmy) 埋下了天使玩偶；或者 Ayu 会询问你，假如她在 (x,y) ，那么她离近的天使玩偶可能埋下的地方有">
+<meta name="twitter:image" content="http://yoursite.com/img/study/angel1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/17/2018-04-17-[Violet 3]天使玩偶/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>[Violet 3]天使玩偶 | Dispwnl</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Dispwnl</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">A Failure</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-users"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-友链">
+    <a href="/links/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />友链</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/17/2018-04-17-[Violet 3]天使玩偶/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dispwnl">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qwq.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dispwnl">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">[Violet 3]天使玩偶
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-04-17 00:00:00" itemprop="dateCreated datePublished" datetime="2018-04-17T00:00:00+08:00">2018-04-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-09 20:28:01" itemprop="dateModified" datetime="2018-10-09T20:28:01+08:00">2018-10-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="题目（bzoj权限题）"><a href="#题目（bzoj权限题）" class="headerlink" title="题目（bzoj权限题）"></a><a href="https://www.luogu.org/problemnew/show/P4169" target="_blank" rel="noopener">题目</a>（bzoj权限题）</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>Ayu 在七年前曾经收到过一个天使玩偶，当时她把它当作时间囊埋在了地下。而七年后 的今天，Ayu 却忘了她把天使玩偶埋在了哪里，所以她决定仅凭一点模糊的记忆来寻找它。</p>
+<p>我们把 Ayu 生活的小镇看作一个二维平面坐标系，而 Ayu 会不定时地记起可能在某个点 (xmy) 埋下了天使玩偶；或者 Ayu 会询问你，假如她在 (x,y) ，那么她离近的天使玩偶可能埋下的地方有多远。</p>
+<p>因为 Ayu 只会沿着平行坐标轴的方向来行动，所以在这个问题里我们定义两个点之间的距离为dist(A,B)=|Ax-Bx|+|Ay-By|。其中 Ax 表示点 A的横坐标，其余类似。</p>
+<h3 id="输入输出格式"><a href="#输入输出格式" class="headerlink" title="输入输出格式"></a>输入输出格式</h3><h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>第一行包含两个整数n和m ，在刚开始时，Ayu 已经知道有n个点可能埋着天使玩偶， 接下来 Ayu 要进行m 次操作</p>
+<p>接下来n行，每行两个非负整数 (xi,yi)，表示初始n个点的坐标。</p>
+<p>再接下来m 行，每行三个非负整数 t,xi,yi。</p>
+<p>如果t=1 ，则表示 Ayu 又回忆起了一个可能埋着玩偶的点 (xi,yi) 。</p>
+<p>如果t=2 ，则表示 Ayu 询问如果她在点 (xi,yi) ，那么在已经回忆出来的点里，离她近的那个点有多远</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>对于每个t=2 的询问，在单独的一行内输出该询问的结果。</p>
+<h3 id="输入输出样例"><a href="#输入输出样例" class="headerlink" title="输入输出样例"></a>输入输出样例</h3><h4 id="输入样例-1："><a href="#输入样例-1：" class="headerlink" title="输入样例#1："></a>输入样例#1：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">2 3 </span><br><span class="line">1 1 </span><br><span class="line">2 3 </span><br><span class="line">2 1 2 </span><br><span class="line">1 3 3 </span><br><span class="line">2 4 2</span><br></pre></td></tr></table></figure>
+<h4 id="输出样例-1："><a href="#输出样例-1：" class="headerlink" title="输出样例#1："></a>输出样例#1：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 </span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>n,m&lt;=300 000</p>
+<p>xi,yi&lt;=1 000 000</p>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><p>可以把时间看成1个条件（初始点为0），坐标为2个条件</p>
+<p>这样就成了一个三维偏序问题，<del>似乎</del>可以用$CDQ分治$搞了</p>
+<p>然而曼哈顿距离带了个绝对值很烦人</p>
+<p>所以分4种情况讨论</p>
+<p>发现四种情况都可以看成是一个大矩阵套一个小矩阵</p>
+<p>情况1：<img src="/img/study/angel1.png" alt=""></p>
+<p>这是最简单的情况，直接找到二分左边的最大值减就行了</p>
+<p>情况2：<img src="/img/study/angel2.png" alt=""></p>
+<p>这种情况肯定不能直接减了<img src="/img/study/angel3.png" alt=""></p>
+<p>我们发现，用最大值减去$A,B$的$x$，可以得到两个新的矩阵$C,D$，而ta们满足条件1，而且答案不变</p>
+<p>所以这么处理就行了</p>
+<p>情况3、4同样处理</p>
+<p>这题似乎卡线段树<del>本来就不是用线段树好吧</del>…必须用树状数组维护<del>我™不会啊</del></p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"># include&lt;iostream&gt;</span><br><span class="line"># include&lt;cstring&gt;</span><br><span class="line"># include&lt;cstdio&gt;</span><br><span class="line"># include&lt;cstdlib&gt;</span><br><span class="line"># include&lt;algorithm&gt; </span><br><span class="line"># define mid (l+r&gt;&gt;1)</span><br><span class="line">using namespace std;</span><br><span class="line">const int MAX=1e6+1;</span><br><span class="line">int s[MAX];</span><br><span class="line">int n,m,tot,maxn,maxx;</span><br><span class="line">int ans[MAX];</span><br><span class="line">int read()</span><br><span class="line">&#123;</span><br><span class="line">    int x=0;</span><br><span class="line">    char ch=getchar();</span><br><span class="line">    for(;!isdigit(ch);ch=getchar());</span><br><span class="line">    for(;isdigit(ch);x=x*10+ch-48,ch=getchar());</span><br><span class="line">    return x;</span><br><span class="line">&#125;</span><br><span class="line">struct q&#123;</span><br><span class="line">    int a,b,c,fl;</span><br><span class="line">    void Read()</span><br><span class="line">    &#123;</span><br><span class="line">        b=read()+1,c=read()+1;</span><br><span class="line">        maxn=max(maxn,c),maxx=max(maxx,b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;f[MAX],c[MAX];</span><br><span class="line">bool cmp(q a,q b)</span><br><span class="line">&#123;</span><br><span class="line">    if(a.b!=b.b)</span><br><span class="line">    return a.b&lt;b.b;</span><br><span class="line">    return a.a&lt;b.a;</span><br><span class="line">&#125;</span><br><span class="line">int lowbit(int x)</span><br><span class="line">&#123;</span><br><span class="line">    return x&amp;(-x);</span><br><span class="line">&#125;</span><br><span class="line">void change(int x,int dis)</span><br><span class="line">&#123;</span><br><span class="line">    for(int i=x;i&lt;=maxn;i+=lowbit(i))</span><br><span class="line">      s[i]=max(s[i],dis);</span><br><span class="line">&#125;</span><br><span class="line">int ask(int x)</span><br><span class="line">&#123;</span><br><span class="line">    int ans=0;</span><br><span class="line">    for(int i=x;i;i-=lowbit(i))</span><br><span class="line">      ans=max(ans,s[i]);</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br><span class="line">void cover(int x)</span><br><span class="line">&#123;</span><br><span class="line">    for(int i=x;i&lt;=maxn;i+=lowbit(i))</span><br><span class="line">      s[i]=0;</span><br><span class="line">&#125;</span><br><span class="line">void solve(int l,int r)</span><br><span class="line">&#123;</span><br><span class="line">    if(l==r) return;</span><br><span class="line">    int L1=l-1,L2=mid;</span><br><span class="line">    for(int i=l;i&lt;=r;++i)</span><br><span class="line">      if(f[i].a&lt;=mid) c[++L1]=f[i];</span><br><span class="line">      else c[++L2]=f[i];</span><br><span class="line">    memcpy(f+l,c+l,sizeof(q)*(r-l+1));</span><br><span class="line">    int L=l;</span><br><span class="line">    for(int i=mid+1;i&lt;=r;++i)</span><br><span class="line">      if(f[i].fl==2)</span><br><span class="line">      &#123;</span><br><span class="line">      	for(;f[L].b&lt;=f[i].b&amp;&amp;L&lt;=mid;++L)</span><br><span class="line">      	  if(f[L].fl==1) change(f[L].c,f[L].c+f[L].b);</span><br><span class="line">      	int tot1=ask(f[i].c);</span><br><span class="line">        if(tot1) ans[f[i].a]=min(ans[f[i].a],f[i].b+f[i].c-tot1);</span><br><span class="line">      &#125;</span><br><span class="line">    for(int i=l;i&lt;L;++i)</span><br><span class="line">      if(f[i].fl==1) cover(f[i].c);</span><br><span class="line">    solve(l,mid),solve(mid+1,r);</span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    n=read(),m=read();</span><br><span class="line">    for(int i=1;i&lt;=n;++i)</span><br><span class="line">      f[++tot].Read(),f[tot].fl=1,f[tot].a=tot;</span><br><span class="line">    for(int i=1;i&lt;=m;++i)</span><br><span class="line">      f[++tot].fl=read(),f[tot].Read(),f[tot].a=tot;</span><br><span class="line">    ++maxn,++maxx;</span><br><span class="line">    memset(ans,1,sizeof(ans));</span><br><span class="line">    sort(f+1,f+1+tot,cmp);</span><br><span class="line">    solve(1,tot);</span><br><span class="line">    for(int i=1;i&lt;=tot;++i)</span><br><span class="line">      f[i].b=maxx-f[i].b;</span><br><span class="line">    sort(f+1,f+1+tot,cmp);</span><br><span class="line">    solve(1,tot);</span><br><span class="line">    for(int i=1;i&lt;=tot;++i)</span><br><span class="line">      f[i].c=maxn-f[i].c;</span><br><span class="line">    sort(f+1,f+1+tot,cmp);</span><br><span class="line">    solve(1,tot);</span><br><span class="line">    for(int i=1;i&lt;=tot;++i)</span><br><span class="line">      f[i].b=maxx-f[i].b;</span><br><span class="line">    sort(f+1,f+1+tot,cmp);</span><br><span class="line">    solve(1,tot);</span><br><span class="line">    for(int i=1;i&lt;=tot;++i)</span><br><span class="line">      if(ans[i]&lt;1e7) printf(&quot;%d\n&quot;,ans[i]);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CDQ分治/" rel="tag"># CDQ分治</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/15/2018-04-15-[国家集训队]矩阵乘法/" rel="next" title="[国家集训队]矩阵乘法">
+                <i class="fa fa-chevron-left"></i> [国家集训队]矩阵乘法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/19/2018-04-24-[NOI2012]魔幻棋盘/" rel="prev" title="[NOI2012]魔幻棋盘">
+                [NOI2012]魔幻棋盘 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/qwq.jpg"
+                alt="Dispwnl" />
+            
+              <p class="site-author-name" itemprop="name">Dispwnl</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">99</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">48</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目（bzoj权限题）"><span class="nav-number">1.</span> <span class="nav-text">题目（bzoj权限题）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出格式"><span class="nav-number">1.2.</span> <span class="nav-text">输入输出格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式："><span class="nav-number">1.2.1.</span> <span class="nav-text">输入格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式："><span class="nav-number">1.2.2.</span> <span class="nav-text">输出格式：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出样例"><span class="nav-number">1.3.</span> <span class="nav-text">输入输出样例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例-1："><span class="nav-number">1.3.1.</span> <span class="nav-text">输入样例#1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例-1："><span class="nav-number">1.3.2.</span> <span class="nav-text">输出样例#1：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#说明"><span class="nav-number">1.4.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">1.5.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">1.6.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-Dispwnl"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dispwnl</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" rel="external nofollow" href="https://theme-next.org">NexT.Gemini</a> v6.4.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

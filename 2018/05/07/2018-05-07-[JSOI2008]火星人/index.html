@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="题目题目描述火星人最近研究了一种操作：求一个字串两个后缀的公共前缀。 比方说，有这样一个字符串：madamimadam，我们将这个字符串的各个字符予以标号： 序号 1 2 3 4 5 6 7 8 9 10 11  字符 m a d a m i m a d a m 现在，火星人定义了一个函数$LCQ(x,y)$，表示：该字符串中第$x$个字符开始的字串，与该字符串中第$y$个字符开始的字串，两个字串">
+<meta name="keywords" content="平衡树,字符串,Hash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[JSOI2008]火星人">
+<meta property="og:url" content="http://yoursite.com/2018/05/07/2018-05-07-[JSOI2008]火星人/index.html">
+<meta property="og:site_name" content="Dispwnl">
+<meta property="og:description" content="题目题目描述火星人最近研究了一种操作：求一个字串两个后缀的公共前缀。 比方说，有这样一个字符串：madamimadam，我们将这个字符串的各个字符予以标号： 序号 1 2 3 4 5 6 7 8 9 10 11  字符 m a d a m i m a d a m 现在，火星人定义了一个函数$LCQ(x,y)$，表示：该字符串中第$x$个字符开始的字串，与该字符串中第$y$个字符开始的字串，两个字串">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-10-09T12:28:07.440Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[JSOI2008]火星人">
+<meta name="twitter:description" content="题目题目描述火星人最近研究了一种操作：求一个字串两个后缀的公共前缀。 比方说，有这样一个字符串：madamimadam，我们将这个字符串的各个字符予以标号： 序号 1 2 3 4 5 6 7 8 9 10 11  字符 m a d a m i m a d a m 现在，火星人定义了一个函数$LCQ(x,y)$，表示：该字符串中第$x$个字符开始的字串，与该字符串中第$y$个字符开始的字串，两个字串">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/07/2018-05-07-[JSOI2008]火星人/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>[JSOI2008]火星人 | Dispwnl</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Dispwnl</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">A Failure</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-users"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-友链">
+    <a href="/links/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />友链</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/07/2018-05-07-[JSOI2008]火星人/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dispwnl">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qwq.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dispwnl">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">[JSOI2008]火星人
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-05-07 00:00:00" itemprop="dateCreated datePublished" datetime="2018-05-07T00:00:00+08:00">2018-05-07</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-09 20:28:07" itemprop="dateModified" datetime="2018-10-09T20:28:07+08:00">2018-10-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a><a href="https://www.luogu.org/problemnew/show/P4036" target="_blank" rel="noopener">题目</a></h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>火星人最近研究了一种操作：求一个字串两个后缀的公共前缀。</p>
+<p>比方说，有这样一个字符串：madamimadam，我们将这个字符串的各个字符予以标号：</p>
+<p>序号 1 2 3 4 5 6 7 8 9 10 11 </p>
+<p>字符 m a d a m i m a d a m</p>
+<p>现在，火星人定义了一个函数$LCQ(x,y)$，表示：该字符串中第$x$个字符开始的字串，与该字符串中第$y$个字符开始的字串，两个字串的公共前缀的长度。比方说，$LCQ(1,7)=5,LCQ(2,10)=1,LCQ(4,7)=0$</p>
+<p>在研究$LCQ$函数的过程中，火星人发现了这样的一个关联：如果把该字符串的所有后缀排好序，就可以很快地求出$LCQ$函数的值；同样，如果求出了 $LCQ$函数的值，也可以很快地将该字符串的后缀排好序。</p>
+<p>尽管火星人聪明地找到了求取$LCQ$函数的快速算法，但不甘心认输的地球人又给火星人出了个难题：在求取$LCQ$函数的同时，还可以改变字符串本身。具体地说，可以更改字符串中某一个字符的值，也可以在字符串中的某一个位置插入一个字符。地球人想考验一下，在如此复杂的问题中，火星人是否还能够做到很快地求取$LCQ$函数的值。</p>
+<h3 id="输入输出格式"><a href="#输入输出格式" class="headerlink" title="输入输出格式"></a>输入输出格式</h3><h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>第一行给出初始的字符串。第二行是一个非负整数$M$，表示操作的个数。接下来的M行，每行描述一个操作。操作有$3$种，如下所示</p>
+<p>询问。语法：$Q x y$，$x,y$均为正整数。功能：计算$LCQ(x,y)$限制：$1\leq x,y\leq $当前字符串长度 。</p>
+<p>修改。语法：$R x d$，$x$是正整数，$d$是字符。功能：将字符串中第$x$个数修改为字符$d$。限制：$x$不超过当前字符串长度。</p>
+<p>插入：语法：$I x d$，$x$是非负整数，$d$是字符。功能：在字符串第$x$个字符之后插入字符$d$，如果$x=0$，则在字符串开头插入。限制：$x$不超过当前字符串长度</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>对于输入文件中每一个询问操作，你都应该输出对应的答案。一个答案一行。</p>
+<h3 id="输入输出样例"><a href="#输入输出样例" class="headerlink" title="输入输出样例"></a>输入输出样例</h3><h4 id="输入样例-1："><a href="#输入样例-1：" class="headerlink" title="输入样例#1："></a>输入样例#1：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">madamimadam</span><br><span class="line">7</span><br><span class="line">Q 1 7</span><br><span class="line">Q 4 8</span><br><span class="line">Q 10 11</span><br><span class="line">R 3 a</span><br><span class="line">Q 1 7</span><br><span class="line">I 10 a</span><br><span class="line">Q 2 11</span><br></pre></td></tr></table></figure>
+<h4 id="输出样例-1："><a href="#输出样例-1：" class="headerlink" title="输出样例#1："></a>输出样例#1：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">5</span><br><span class="line">1</span><br><span class="line">0</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>所有字符串自始至终都只有小写字母构成。</p>
+<p>$M\leq 150,000$</p>
+<p>字符串长度L自始至终都满足$L\leq 100,000$</p>
+<p>询问操作的个数不超过$10,000$个。</p>
+<p>对于第$1$，$2$个数据，字符串长度自始至终都不超过$1,000$ </p>
+<p>对于第$3$，$4$，$5$个数据，没有插入操作。</p>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><p>开始看见$LCQ$以为这题是后缀数组…但是正解是平衡树+$Hash$</p>
+<p>维护Hash值：$Hash_{now}=Hash_l(size_r+1)+ch_{now}size_r+Hash_r$</p>
+<p>然后统计答案时二分$l$，提出$[x,x+l]$和$[y,y+l]$这一区间的$Hash$值，进行比较</p>
+<p>用 unsigned int 比 int 快一些…可能是处理负号的缘故…？</p>
+<p>$splay$和$Fhq$ $Treap$都能搞，这里用了$Fhq$ $Treap$</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br></pre></td><td class="code"><pre><span class="line"># include&lt;iostream&gt;</span><br><span class="line"># include&lt;cstring&gt;</span><br><span class="line"># include&lt;cstdio&gt;</span><br><span class="line"># include&lt;cstdlib&gt;</span><br><span class="line"># define LL unsigned int</span><br><span class="line">using namespace std;</span><br><span class="line">const int MAX=2e5+1;</span><br><span class="line">int rt,tot,n,m;</span><br><span class="line">string A;</span><br><span class="line">LL ha[MAX];</span><br><span class="line">struct Fhq_Treap&#123;</span><br><span class="line">    int pos[MAX],siz[MAX],Ch[MAX];</span><br><span class="line">    LL w[MAX];</span><br><span class="line">    int son[MAX][2];</span><br><span class="line">    void pus(int x)</span><br><span class="line">    &#123;</span><br><span class="line">        siz[x]=siz[son[x][1]]+siz[son[x][0]]+1;</span><br><span class="line">        w[x]=w[son[x][0]]*ha[siz[son[x][1]]+1]+ha[siz[son[x][1]]]*Ch[x]+w[son[x][1]];</span><br><span class="line">    &#125;</span><br><span class="line">    int merge(int x,int y)</span><br><span class="line">    &#123;</span><br><span class="line">        if(!x||!y) return x+y;</span><br><span class="line">        if(pos[x]&lt;pos[y])</span><br><span class="line">        &#123;</span><br><span class="line">            son[x][1]=merge(son[x][1],y);</span><br><span class="line">            pus(x);</span><br><span class="line">            return x;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            son[y][0]=merge(x,son[y][0]);</span><br><span class="line">            pus(y);</span><br><span class="line">            return y;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    void split(int i,int k,int &amp;a,int &amp;b)</span><br><span class="line">    &#123;</span><br><span class="line">        if(!i) a=b=0;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            if(k&lt;=siz[son[i][0]])</span><br><span class="line">            b=i,split(son[i][0],k,a,son[i][0]);</span><br><span class="line">            else a=i,split(son[i][1],k-siz[son[i][0]]-1,son[i][1],b);</span><br><span class="line">            pus(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    void ins(int x,char ch)</span><br><span class="line">    &#123;</span><br><span class="line">        int a,b;</span><br><span class="line">        split(rt,x,a,b);</span><br><span class="line">        w[++tot]=Ch[tot]=ch-&apos;a&apos;+1,siz[tot]=1,pos[tot]=rand();</span><br><span class="line">        rt=merge(merge(a,tot),b);</span><br><span class="line">    &#125;</span><br><span class="line">    void cut(int x)</span><br><span class="line">    &#123;</span><br><span class="line">        int a,b,c;</span><br><span class="line">        split(rt,x,a,c);</span><br><span class="line">        split(a,x-1,a,b);</span><br><span class="line">        b=merge(son[b][0],son[b][1]);</span><br><span class="line">        rt=merge(merge(a,b),c);</span><br><span class="line">    &#125;</span><br><span class="line">    LL ask(int l,int r)</span><br><span class="line">    &#123;</span><br><span class="line">        int L=r-l+1;</span><br><span class="line">        int a,b,c,d;</span><br><span class="line">        split(rt,l-1,a,b);</span><br><span class="line">        split(b,L,c,d);</span><br><span class="line">        LL ans=w[c];</span><br><span class="line">        rt=merge(a,merge(c,d));</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">    bool look(int x,int y,int mid)</span><br><span class="line">    &#123;</span><br><span class="line">        LL ans1=ask(x,x+mid-1),ans2=ask(y,y+mid-1);</span><br><span class="line">        return ans1==ans2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;Tree;</span><br><span class="line">string Read()</span><br><span class="line">&#123;</span><br><span class="line">    string a=&quot; &quot;;</span><br><span class="line">    char ch=getchar();</span><br><span class="line">    for(;ch&gt;&apos;z&apos;||ch&lt;&apos;a&apos;;ch=getchar());</span><br><span class="line">    for(;ch&lt;=&apos;z&apos;&amp;&amp;ch&gt;=&apos;a&apos;;a+=ch,ch=getchar());</span><br><span class="line">    return a;</span><br><span class="line">&#125;</span><br><span class="line">char read_char()</span><br><span class="line">&#123;</span><br><span class="line">    char ch=getchar();</span><br><span class="line">    for(;ch&gt;&apos;z&apos;||ch&lt;&apos;A&apos;;ch=getchar());</span><br><span class="line">    return ch;</span><br><span class="line">&#125;</span><br><span class="line">int read()</span><br><span class="line">&#123;</span><br><span class="line">    int x=0;</span><br><span class="line">    char ch=getchar();</span><br><span class="line">    for(;!isdigit(ch);ch=getchar());</span><br><span class="line">    for(;isdigit(ch);x=x*10+ch-48,ch=getchar());</span><br><span class="line">    return x;</span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    A=Read(),n=A.length()-1,m=read();</span><br><span class="line">    ha[0]=1;</span><br><span class="line">    for(int i=1;i&lt;MAX;++i)</span><br><span class="line">      ha[i]=ha[i-1]*27;</span><br><span class="line">    for(int i=1;i&lt;=n;++i)</span><br><span class="line">      Tree.ins(i,A[i]);</span><br><span class="line">    for(int i=1;i&lt;=m;++i)</span><br><span class="line">      &#123;</span><br><span class="line">      	char op=read_char();</span><br><span class="line">      	if(op==&apos;Q&apos;)</span><br><span class="line">      	&#123;</span><br><span class="line">      		int x=read(),y=read();</span><br><span class="line">      		int l=1,r=min(n-x,n-y)+1,ans=0;</span><br><span class="line">      		while(l&lt;=r)</span><br><span class="line">      		&#123;</span><br><span class="line">      			int mid=(l+r&gt;&gt;1);</span><br><span class="line">      			if(Tree.look(x,y,mid)) l=mid+1,ans=mid;</span><br><span class="line">      			else r=mid-1;</span><br><span class="line">            &#125;</span><br><span class="line">            printf(&quot;%d\n&quot;,ans);</span><br><span class="line">        &#125;</span><br><span class="line">        else if(op==&apos;R&apos;)</span><br><span class="line">        &#123;</span><br><span class="line">            int x=read();</span><br><span class="line">            Tree.cut(x),Tree.ins(x-1,read_char());</span><br><span class="line">        &#125;</span><br><span class="line">        else if(op==&apos;I&apos;)</span><br><span class="line">        &#123;</span><br><span class="line">            int x=read();</span><br><span class="line">            ++n,Tree.ins(x,read_char());</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/平衡树/" rel="tag"># 平衡树</a>
+          
+            <a href="/tags/字符串/" rel="tag"># 字符串</a>
+          
+            <a href="/tags/Hash/" rel="tag"># Hash</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/19/2018-04-19-[NOI2007]货币兑换/" rel="next" title="[NOI2007]货币兑换">
+                <i class="fa fa-chevron-left"></i> [NOI2007]货币兑换
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/22/2018-05-22-[FJOI2007]轮状病毒/" rel="prev" title="[FJOI2007]轮状病毒">
+                [FJOI2007]轮状病毒 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/qwq.jpg"
+                alt="Dispwnl" />
+            
+              <p class="site-author-name" itemprop="name">Dispwnl</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">99</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">48</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出格式"><span class="nav-number">1.2.</span> <span class="nav-text">输入输出格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式："><span class="nav-number">1.2.1.</span> <span class="nav-text">输入格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式："><span class="nav-number">1.2.2.</span> <span class="nav-text">输出格式：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出样例"><span class="nav-number">1.3.</span> <span class="nav-text">输入输出样例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例-1："><span class="nav-number">1.3.1.</span> <span class="nav-text">输入样例#1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例-1："><span class="nav-number">1.3.2.</span> <span class="nav-text">输出样例#1：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#说明"><span class="nav-number">1.4.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">1.5.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">1.6.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-Dispwnl"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dispwnl</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" rel="external nofollow" href="https://theme-next.org">NexT.Gemini</a> v6.4.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

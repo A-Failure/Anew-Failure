@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="题目题目描述S国有N个城市，编号从1到N。城市间用N-1条双向道路连接，满足从一个城市出发可以到达其它所有城市。每个城市信仰不同的宗教，如飞天面条神教、隐形独角兽教、绝地教都是常见的信仰。 为了方便，我们用不同的正整数代表各种宗教， S国的居民常常旅行。旅行时他们总会走最短路，并且为了避免麻烦，只在信仰和他们相同的城市留宿。当然旅程的终点也是信仰与他相同的城市。S国政府为每个城市标定了不同的旅行评">
+<meta name="keywords" content="树链剖分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[SDOI2014]旅行">
+<meta property="og:url" content="http://yoursite.com/2018/01/07/2018-01-07-[SDOI2014]旅行/index.html">
+<meta property="og:site_name" content="Dispwnl">
+<meta property="og:description" content="题目题目描述S国有N个城市，编号从1到N。城市间用N-1条双向道路连接，满足从一个城市出发可以到达其它所有城市。每个城市信仰不同的宗教，如飞天面条神教、隐形独角兽教、绝地教都是常见的信仰。 为了方便，我们用不同的正整数代表各种宗教， S国的居民常常旅行。旅行时他们总会走最短路，并且为了避免麻烦，只在信仰和他们相同的城市留宿。当然旅程的终点也是信仰与他相同的城市。S国政府为每个城市标定了不同的旅行评">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-10-09T12:31:38.800Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[SDOI2014]旅行">
+<meta name="twitter:description" content="题目题目描述S国有N个城市，编号从1到N。城市间用N-1条双向道路连接，满足从一个城市出发可以到达其它所有城市。每个城市信仰不同的宗教，如飞天面条神教、隐形独角兽教、绝地教都是常见的信仰。 为了方便，我们用不同的正整数代表各种宗教， S国的居民常常旅行。旅行时他们总会走最短路，并且为了避免麻烦，只在信仰和他们相同的城市留宿。当然旅程的终点也是信仰与他相同的城市。S国政府为每个城市标定了不同的旅行评">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/07/2018-01-07-[SDOI2014]旅行/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>[SDOI2014]旅行 | Dispwnl</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Dispwnl</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">A Failure</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-users"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-友链">
+    <a href="/links/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />友链</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/07/2018-01-07-[SDOI2014]旅行/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dispwnl">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qwq.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dispwnl">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">[SDOI2014]旅行
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-01-07 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-07T00:00:00+08:00">2018-01-07</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-09 20:31:38" itemprop="dateModified" datetime="2018-10-09T20:31:38+08:00">2018-10-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a><a href="https://www.luogu.org/problemnew/show/P3313" target="_blank" rel="noopener">题目</a></h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>S国有N个城市，编号从1到N。城市间用N-1条双向道路连接，满足从一个城市出发可以到达其它所有城市。每个城市信仰不同的宗教，如飞天面条神教、隐形独角兽教、绝地教都是常见的信仰。</p>
+<p>为了方便，我们用不同的正整数代表各种宗教， S国的居民常常旅行。旅行时他们总会走最短路，并且为了避免麻烦，只在信仰和他们相同的城市留宿。当然旅程的终点也是信仰与他相同的城市。S国政府为每个城市标定了不同的旅行评级，旅行者们常会记下途中（包括起点和终点）留宿过的城市的评级总和或最大值。</p>
+<p>在S国的历史上常会发生以下几种事件：</p>
+<p>“CC x c“：城市x的居民全体改信了c教；</p>
+<p>“CW x w“：城市x的评级调整为w;</p>
+<p>“QS x y“：一位旅行者从城市x出发，到城市y，并记下了途中留宿过的城市的评级总和；</p>
+<p>“QM x y“：一位旅行者从城市x出发，到城市y，并记下了途中留宿过的城市的评级最大值。</p>
+<p>由于年代久远，旅行者记下的数字已经遗失了，但记录开始之前每座城市的信仰与评级，还有事件记录本身是完好的。请根据这些信息，还原旅行者记下的数字。 为了方便，我们认为事件之间的间隔足够长，以致在任意一次旅行中，所有城市的评级和信仰保持不变。</p>
+<h3 id="输入输出格式"><a href="#输入输出格式" class="headerlink" title="输入输出格式"></a>输入输出格式</h3><h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入的第一行包含整数N，Q依次表示城市数和事件数。</p>
+<p>接下来N行，第i+l行两个整数Wi，Ci依次表示记录开始之前，城市i的评级和信仰。 接下来N-1行每行两个整数x，y表示一条双向道路。</p>
+<p>接下来Q行，每行一个操作，格式如上所述。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>对每个QS和QM事件，输出一行，表示旅行者记下的数字。</p>
+<h3 id="输入输出样例"><a href="#输入输出样例" class="headerlink" title="输入输出样例"></a>输入输出样例</h3><h4 id="输入样例-1："><a href="#输入样例-1：" class="headerlink" title="输入样例#1："></a>输入样例#1：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">5 6</span><br><span class="line">3 1</span><br><span class="line">2 3</span><br><span class="line">1 2</span><br><span class="line">3 3</span><br><span class="line">5 1</span><br><span class="line">1 2</span><br><span class="line">1 3</span><br><span class="line">3 4</span><br><span class="line">3 5</span><br><span class="line">QS 1 5</span><br><span class="line">CC 3 1</span><br><span class="line">QS 1 5</span><br><span class="line">CW 3 3</span><br><span class="line">QS 1 5</span><br><span class="line">QM 2 4</span><br></pre></td></tr></table></figure>
+<h4 id="输出样例-1："><a href="#输出样例-1：" class="headerlink" title="输出样例#1："></a>输出样例#1：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">8</span><br><span class="line">9</span><br><span class="line">11</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>N，Q &lt; =10^5 ， C &lt; =10^5</p>
+<p>数据保证对所有QS和QM事件，起点和终点城市的信仰相同；在任意时刻，城市的评级总是不大于10^4的正整数，且宗教值不大于C。</p>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><p>有多少个宗教就建几个线段树，这就得用到动态开点了</p>
+<p>几个坑点</p>
+<p>数组要开大一点（1e5*32差不多）</p>
+<p>建树时注意树与树之间会重叠</p>
+<p>区间查询时只查询与出发点信仰相同的点<del>然而样例水到能过</del></p>
+<p>如查询$1-&gt;3-&gt;5$，5与1信仰相同，3不同，所以3不查询</p>
+<p>还有单点修改时记得储存，不能只把线段树中的点修改，原点也要修改<del>多么zz的提醒</del></p>
+<p>然后差不多了，耐着性子打完吧</p>
+<p>我打了198行还慢的要死。。。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br></pre></td><td class="code"><pre><span class="line"># include&lt;iostream&gt;</span><br><span class="line"># include&lt;cstdio&gt;</span><br><span class="line"># include&lt;cstring&gt;</span><br><span class="line"># include&lt;algorithm&gt; </span><br><span class="line"># include&lt;queue&gt;</span><br><span class="line"># include&lt;cmath&gt;</span><br><span class="line">#define mid ((l+r)&gt;&gt;1)</span><br><span class="line">#define tl c[k].l</span><br><span class="line">#define tr c[k].r</span><br><span class="line">#define ini inline int</span><br><span class="line">#define inv inline void</span><br><span class="line">#define ge getchar()</span><br><span class="line">#define is isdigit(ch)</span><br><span class="line">#define cn(a) string a;cin&gt;&gt;a</span><br><span class="line">using namespace std;</span><br><span class="line">const int MAX=1e5+1;</span><br><span class="line">struct p&#123;</span><br><span class="line">    int x,maxn,l,r;</span><br><span class="line">&#125;c[MAX&lt;&lt;5];</span><br><span class="line">struct q&#123;</span><br><span class="line">    int x,y;</span><br><span class="line">&#125;C[MAX&lt;&lt;1];</span><br><span class="line">struct o&#123;</span><br><span class="line">    int deep,id,siz,son,fa,top,w,belief;</span><br><span class="line">&#125;cc[MAX];</span><br><span class="line">int n,m,num,cnt,tot;</span><br><span class="line">int h[MAX],rt[MAX];</span><br><span class="line">ini max(int x,int y)</span><br><span class="line">&#123;</span><br><span class="line">    return x&gt;y?x:y;</span><br><span class="line">&#125;</span><br><span class="line">ini read()</span><br><span class="line">&#123;</span><br><span class="line">    int x=0,f=1;</span><br><span class="line">    char ch=ge;</span><br><span class="line">    while(!is)</span><br><span class="line">    &#123;</span><br><span class="line">        if(ch==&apos;-&apos;) f=-1;</span><br><span class="line">        ch=ge;</span><br><span class="line">    &#125;</span><br><span class="line">    while(is)</span><br><span class="line">    &#123;</span><br><span class="line">        x=x*10+ch-48;</span><br><span class="line">        ch=ge;</span><br><span class="line">    &#125;</span><br><span class="line">    return x*f;</span><br><span class="line">&#125;</span><br><span class="line">inv add(int x,int y)</span><br><span class="line">&#123;</span><br><span class="line">    C[++num].x=h[x];</span><br><span class="line">    C[num].y=y;</span><br><span class="line">    h[x]=num;</span><br><span class="line">&#125;</span><br><span class="line">inv pus(int k)</span><br><span class="line">&#123;</span><br><span class="line">    c[k].maxn=max(c[tl].maxn,c[tr].maxn);</span><br><span class="line">    c[k].x=c[tl].x+c[tr].x;</span><br><span class="line">&#125;</span><br><span class="line">void dfs(int x,int f)</span><br><span class="line">&#123;</span><br><span class="line">    cc[x].deep=cc[f].deep+1;</span><br><span class="line">    cc[x].fa=f;</span><br><span class="line">    cc[x].siz=1;</span><br><span class="line">    for(int i=h[x];i;i=C[i].x)</span><br><span class="line">      &#123;</span><br><span class="line">          int y=C[i].y;</span><br><span class="line">          if(y==f) continue;</span><br><span class="line">          dfs(y,x);</span><br><span class="line">          cc[x].siz+=cc[y].siz;</span><br><span class="line">          if(cc[y].siz&gt;cc[cc[x].son].siz)</span><br><span class="line">          cc[x].son=y;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br><span class="line">void dfs1(int x,int tp)</span><br><span class="line">&#123;</span><br><span class="line">    cc[x].top=tp;</span><br><span class="line">    cc[x].id=++cnt;</span><br><span class="line">    if(cc[x].son) dfs1(cc[x].son,tp);</span><br><span class="line">    for(int i=h[x];i;i=C[i].x)</span><br><span class="line">      &#123;</span><br><span class="line">          int y=C[i].y;</span><br><span class="line">          if(y==cc[x].fa||y==cc[x].son)</span><br><span class="line">          continue;</span><br><span class="line">          dfs1(y,y);</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br><span class="line">void build(int x,int y,int l,int r,int &amp;k)</span><br><span class="line">&#123;</span><br><span class="line">    if(!k) k=++tot;</span><br><span class="line">    if(l==r)</span><br><span class="line">    &#123;</span><br><span class="line">        c[k].maxn=c[k].x=x;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    if(y&lt;=mid) build(x,y,l,mid,tl);</span><br><span class="line">    else build(x,y,mid+1,r,tr);</span><br><span class="line">    pus(k);</span><br><span class="line">&#125;</span><br><span class="line">void cut(int x,int l,int r,int &amp;k)</span><br><span class="line">&#123;</span><br><span class="line">    if(l==r)</span><br><span class="line">    &#123;</span><br><span class="line">        c[k].maxn=c[k].x=c[k].l=c[k].r=0;</span><br><span class="line">        k=0;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    if(x&lt;=mid) cut(x,l,mid,tl);</span><br><span class="line">    else cut(x,mid+1,r,tr);</span><br><span class="line">    pus(k);</span><br><span class="line">    if(!tr&amp;&amp;!tl)</span><br><span class="line">    &#123;</span><br><span class="line">        c[k].maxn=c[k].x=c[k].l=c[k].r=0;</span><br><span class="line">        k=0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">int ask_max(int l,int r,int k,int L,int R)</span><br><span class="line">&#123;</span><br><span class="line">    if(!k) return 0;</span><br><span class="line">    if(l&gt;=L&amp;&amp;r&lt;=R) return c[k].maxn;</span><br><span class="line">    if(l&gt;R||r&lt;L) return 0;</span><br><span class="line">    return max(ask_max(l,mid,tl,L,R),ask_max(mid+1,r,tr,L,R));</span><br><span class="line">&#125;</span><br><span class="line">int ask_sum(int l,int r,int k,int L,int R)</span><br><span class="line">&#123;</span><br><span class="line">    if(!k) return 0;</span><br><span class="line">    if(l&gt;=L&amp;&amp;r&lt;=R) return c[k].x;</span><br><span class="line">    if(l&gt;R||r&lt;L) return 0;</span><br><span class="line">    return ask_sum(l,mid,tl,L,R)+ask_sum(mid+1,r,tr,L,R);</span><br><span class="line">&#125;</span><br><span class="line">inv CHANGE(int x,int y)</span><br><span class="line">&#123;</span><br><span class="line">    cc[x].w=y;</span><br><span class="line">    build(y,cc[x].id,1,n,rt[cc[x].belief]);</span><br><span class="line">&#125;</span><br><span class="line">inv CUT(int x,int y)</span><br><span class="line">&#123;</span><br><span class="line">    cut(cc[x].id,1,n,rt[cc[x].belief]);</span><br><span class="line">    cc[x].belief=y;</span><br><span class="line">    build(cc[x].w,cc[x].id,1,n,rt[cc[x].belief]);</span><br><span class="line">&#125;</span><br><span class="line">ini ASK_MAX(int x,int y)</span><br><span class="line">&#123;</span><br><span class="line">    int ans=0,RT=cc[x].belief;</span><br><span class="line">    while(cc[x].top!=cc[y].top)</span><br><span class="line">    &#123;</span><br><span class="line">        if(cc[cc[x].top].deep&lt;cc[cc[y].top].deep)</span><br><span class="line">        swap(x,y);</span><br><span class="line">        ans=max(ans,ask_max(1,n,rt[RT],cc[cc[x].top].id,cc[x].id));</span><br><span class="line">        x=cc[cc[x].top].fa;</span><br><span class="line">    &#125;</span><br><span class="line">    if(cc[x].deep&gt;cc[y].deep) swap(x,y);</span><br><span class="line">    ans=max(ans,ask_max(1,n,rt[RT],cc[x].id,cc[y].id));</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br><span class="line">ini ASK_SUM(int x,int y)</span><br><span class="line">&#123;</span><br><span class="line">    int ans=0,RT=cc[x].belief;</span><br><span class="line">    while(cc[x].top!=cc[y].top)</span><br><span class="line">    &#123;</span><br><span class="line">        if(cc[cc[x].top].deep&lt;cc[cc[y].top].deep)</span><br><span class="line">        swap(x,y);</span><br><span class="line">        ans+=ask_sum(1,n,rt[RT],cc[cc[x].top].id,cc[x].id);</span><br><span class="line">        x=cc[cc[x].top].fa;</span><br><span class="line">    &#125;</span><br><span class="line">    if(cc[x].deep&gt;cc[y].deep) swap(x,y);</span><br><span class="line">    ans+=ask_sum(1,n,rt[RT],cc[x].id,cc[y].id);</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    n=read(),m=read();</span><br><span class="line">    for(int i=1;i&lt;=n;i++)</span><br><span class="line">      cc[i].w=read(),cc[i].belief=read();</span><br><span class="line">    for(int i=1;i&lt;n;i++)</span><br><span class="line">      &#123;</span><br><span class="line">          int x=read(),y=read();</span><br><span class="line">          add(x,y);</span><br><span class="line">          add(y,x);</span><br><span class="line">      &#125;</span><br><span class="line">    dfs(1,0);</span><br><span class="line">    dfs1(1,1);</span><br><span class="line">    for(int i=1;i&lt;=n;i++)</span><br><span class="line">      build(cc[i].w,cc[i].id,1,n,rt[cc[i].belief]);</span><br><span class="line">    for(int i=1;i&lt;=m;i++)</span><br><span class="line">      &#123;</span><br><span class="line">          cn(a);</span><br><span class="line">          int x=read(),y=read();</span><br><span class="line">          if(a==&quot;CC&quot;)</span><br><span class="line">          CUT(x,y);</span><br><span class="line">          if(a==&quot;CW&quot;)</span><br><span class="line">          CHANGE(x,y);</span><br><span class="line">          if(a==&quot;QS&quot;)</span><br><span class="line">          printf(&quot;%d\n&quot;,ASK_SUM(x,y));</span><br><span class="line">          if(a==&quot;QM&quot;)</span><br><span class="line">          printf(&quot;%d\n&quot;,ASK_MAX(x,y));</span><br><span class="line">      &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/树链剖分/" rel="tag"># 树链剖分</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/24/2017-12-24-[USACO16OPEN]248/" rel="next" title="[USACO16OPEN]248">
+                <i class="fa fa-chevron-left"></i> [USACO16OPEN]248
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/14/2018-03-14-平衡树模板+Fhq_Treap详解/" rel="prev" title="平衡树模板+Fhq_Treap详解">
+                平衡树模板+Fhq_Treap详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/qwq.jpg"
+                alt="Dispwnl" />
+            
+              <p class="site-author-name" itemprop="name">Dispwnl</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">99</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">48</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出格式"><span class="nav-number">1.2.</span> <span class="nav-text">输入输出格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式："><span class="nav-number">1.2.1.</span> <span class="nav-text">输入格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式："><span class="nav-number">1.2.2.</span> <span class="nav-text">输出格式：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出样例"><span class="nav-number">1.3.</span> <span class="nav-text">输入输出样例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例-1："><span class="nav-number">1.3.1.</span> <span class="nav-text">输入样例#1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例-1："><span class="nav-number">1.3.2.</span> <span class="nav-text">输出样例#1：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#说明"><span class="nav-number">1.4.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">1.5.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">1.6.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-Dispwnl"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dispwnl</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" rel="external nofollow" href="https://theme-next.org">NexT.Gemini</a> v6.4.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
